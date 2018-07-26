@@ -1,0 +1,1 @@
+# tf-module-azure-arm-service-app-slot-virtual-application
