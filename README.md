@@ -1,5 +1,4 @@
-# tf-module-azure-arm-service-app-slot-virtual-application
-
+# terraform-azurerm-template-app-service-virtual-application-slot
 Terraform module designed to add VirualApplications on an existing Slot on a Azure PaaS Service and Function Apps.
 
 ## Usage
