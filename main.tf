@@ -8,7 +8,7 @@ resource "azurerm_template_deployment" "service_app_slot_virtual_application_mai
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "serviceAppName": {
+    "appServiceName": {
       "type": "string"
     },
     "slotName":{
@@ -48,7 +48,7 @@ resource "azurerm_template_deployment" "service_app_slot_virtual_application_mai
     {
       "comments": "WebApp VirtualDirectories",
       "type": "Microsoft.Web/sites/slots/config",
-      "name": [concat(parameters('serviceAppName'),'/',parameters('slotName') ,'/web')]",
+      "name": [concat(parameters('appServiceName'),'/',parameters('slotName') ,'/web')]",
       "apiVersion": "2016-08-01",
       "properties": {
         "virtualApplications": "[variables('virtualApplications')]"
@@ -60,7 +60,7 @@ resource "azurerm_template_deployment" "service_app_slot_virtual_application_mai
 DEPLOY
 
   parameters {
-    "serviceAppName"   = "${var.service_app_name}"
+    "appServiceName"   = "${var.app_service_name}"
     "applicationNames" = "${join(",",var.application_names)}"
     "slotName"         = "${var.slot_name}"
   }
