@@ -19,30 +19,22 @@ resource "azurerm_template_deployment" "service_app_slot_virtual_application_mai
     }
   },
   "variables": {
-      "applicationNames" :"[split(parameters('applicationNames'),',')]",
-      "child": {
-        "copy": [
-            {
-                "name": "applications",
-                "count": "[length(variables('applicationNames'))]",
-                "input": {
-                    "virtualPath": "[concat('/', variables('applicationNames')[copyIndex('applications')]) ]",
-                    "physicalPath": "[concat('site\\wwwroot\\', variables('applicationNames')[copyIndex('applications')]) ]",
-                    "preloadEnabled": false,
-                    "virtualDirectories": null
+        "appNames": "[union(variables('wwwroot'),split(parameters('applicationNames'),','))]",
+        "virtual": {
+            "copy": [
+                {
+                    "count": "[length(variables('appNames'))]",
+                    "input": {
+                        "physicalPath": "[concat('site\\wwwroot\\', variables('appNames')[copyIndex('apps')]) ]",
+                        "preloadEnabled": false,
+                        "virtualDirectories": null,
+                        "virtualPath": "[concat('/', variables('appNames')[copyIndex('apps')]) ]"
+                    },
+                    "name": "apps"
                 }
-            }
-        ]
+            ]
         },
-        "root":[
-            {
-                "virtualPath": "/",
-                "physicalPath": "site\\wwwroot",
-                "preloadEnabled": false,
-                "virtualDirectories": null
-            }
-        ],
-        "virtualApplications":"[union(variables('child').applications, variables('root'))]"
+        "wwwroot": "[split('',',')]"
   },
   "resources": [
     {
@@ -51,11 +43,17 @@ resource "azurerm_template_deployment" "service_app_slot_virtual_application_mai
       "name": [concat(parameters('appServiceName'),'/',parameters('slotName') ,'/web')]",
       "apiVersion": "2016-08-01",
       "properties": {
-        "virtualApplications": "[variables('virtualApplications')]"
+        "virtualApplications": "[variables('virtual').apps]"
         },
       "dependsOn": []
     }
-  ]
+  ],
+  "outputs": {
+      "virtualApplications": {
+          "type": "Array",
+          "value": "[variables('virtual').apps]"
+      }
+  }
 }
 DEPLOY
 
