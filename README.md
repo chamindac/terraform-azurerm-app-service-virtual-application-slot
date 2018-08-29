@@ -55,10 +55,3 @@ This will run an arm template deployment on the given resource group containing 
 | slot_name | Slot name eg: `staging` | string | - | yes |
 | application_names | List of applications to create VirualApplications and directories<br>eg: `["api","coolapps"]`| list | - | yes |
 | resource_group_name | Resource Group name, e.g. `testing-service-rg` | string | - | yes |
-
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| resource_group_name | Resource Group name |
