@@ -37,7 +37,7 @@ resource "azurerm_app_service_slot" "test" {
 
 # Add Virual Applications to Services App slot
 module "eg_test_slot_add_virtualApplication" {
-  source     = "git::https://github.com/transactiveltd/tf-module-azure-arm-service-app-slot-virtual-application.git?ref=v0.1.0"
+  source     = "git::https://github.com/chamindac/terraform-azurerm-app-service-virtual-application-slot.git?ref=v0.1.3"
 
   app_service_name    = ["${data.azurerm_app_service.test.name}"]
   slot_name           = "${azurerm_app_service_slot.test.name}"

@@ -1,17 +1,17 @@
 variable "resource_group_name" {
-  type = "string"
+  type = string
 }
 
 variable "app_service_name" {
-  type = "string"
+  type = string
 }
 
 variable "application_names" {
-  type = "list"
+  type = list
 
   description = "List of application names"
 }
 
 variable "slot_name" {
-  type = "string"
+  type = string
 }
