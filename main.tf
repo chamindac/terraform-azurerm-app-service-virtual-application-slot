@@ -5,20 +5,20 @@ resource "azurerm_template_deployment" "service_app_slot_virtual_application_mai
 
   template_body = <<DEPLOY
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "appServiceName": {
-      "type": "string"
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appServiceName": {
+            "type": "String"
+        },
+        "slotName":{
+            "type": "string"
+        },
+        "applicationNames": {
+            "type": "String"
+        }
     },
-    "slotName":{
-      "type": "string"
-    },
-    "applicationNames":{
-      "type": "string"
-    }
-  },
-  "variables": {
+    "variables": {
         "appNames": "[union(variables('wwwroot'),split(parameters('applicationNames'),','))]",
         "virtual": {
             "copy": [
@@ -35,25 +35,24 @@ resource "azurerm_template_deployment" "service_app_slot_virtual_application_mai
             ]
         },
         "wwwroot": "[split('',',')]"
-  },
-  "resources": [
-    {
-      "comments": "WebApp VirtualDirectories",
-      "type": "Microsoft.Web/sites/slots/config",
-      "name": [concat(parameters('appServiceName'),'/',parameters('slotName') ,'/web')]",
-      "apiVersion": "2016-08-01",
-      "properties": {
-        "virtualApplications": "[variables('virtual').apps]"
-        },
-      "dependsOn": []
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Web/sites/slots/config",
+            "name": "[concat(parameters('appServiceName'), '/', parameters('slotName'), '/web')]",
+            "apiVersion": "2016-08-01",
+            "properties": {
+                "virtualApplications": "[variables('virtual').apps]"
+            },
+            "dependsOn": []
+        }
+    ],
+    "outputs": {
+        "virtualApplications": {
+            "type": "Array",
+            "value": "[variables('virtual').apps]"
+        }
     }
-  ],
-  "outputs": {
-      "virtualApplications": {
-          "type": "Array",
-          "value": "[variables('virtual').apps]"
-      }
-  }
 }
 DEPLOY
 

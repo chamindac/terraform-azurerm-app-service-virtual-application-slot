@@ -16,10 +16,10 @@ data "azurerm_app_service" "test" {
 # Create a new slot
 resource "azurerm_app_service_slot" "test" {
   name                = "staging"
-  app_service_name    = "${data.azurerm_app_service.test.name}"
-  location            = "${data.azurerm_app_service.test.location}"
-  resource_group_name = "${data.azurerm_app_service.test.resource_group_name}"
-  app_service_plan_id = "${data.azurerm_app_service.test.app_service_plan_id}"
+  app_service_name    = data.azurerm_app_service.test.name
+  location            = data.azurerm_app_service.test.location
+  resource_group_name = data.azurerm_app_service.test.resource_group_name
+  app_service_plan_id = data.azurerm_app_service.test.app_service_plan_id
 
   site_config {
     dotnet_framework_version = "v4.0"
@@ -37,12 +37,12 @@ resource "azurerm_app_service_slot" "test" {
 
 # Add Virual Applications to Services App slot
 module "eg_test_slot_add_virtualApplication" {
-  source     = "git::https://github.com/chamindac/terraform-azurerm-app-service-virtual-application-slot.git?ref=0.1.4"
+  source     = "git::https://github.com/chamindac/terraform-azurerm-app-service-virtual-application-slot.git?ref=0.1.5"
 
-  app_service_name    = ["${data.azurerm_app_service.test.name}"]
-  slot_name           = "${azurerm_app_service_slot.test.name}"
+  app_service_name    = data.azurerm_app_service.test.name
+  slot_name           = azurerm_app_service_slot.test.name
   application_names   = ["api","coolapp"]
-  resource_group_name = "${data.azurerm_app_service.test.resource_group_name}"
+  resource_group_name = data.azurerm_app_service.test.resource_group_name
 }
 ```
 
