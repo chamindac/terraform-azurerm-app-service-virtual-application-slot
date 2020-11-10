@@ -57,10 +57,10 @@ resource "azurerm_template_deployment" "service_app_slot_virtual_application_mai
 }
 DEPLOY
 
-  parameters {
-    "appServiceName"   = "${var.app_service_name}"
+  parameters = {
+    "appServiceName"   = var.app_service_name
     "applicationNames" = "${join(",",var.application_names)}"
-    "slotName"         = "${var.slot_name}"
+    "slotName"         = var.slot_name
   }
 
   depends_on = []
